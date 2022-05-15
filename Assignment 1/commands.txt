@@ -1,0 +1,90 @@
+[cloudera@quickstart ~]$ hadoop
+Usage: hadoop [--config confdir] COMMAND
+       where COMMAND is one of:
+  fs                   run a generic filesystem user client
+  version              print the version
+  jar <jar>            run a jar file
+  checknative [-a|-h]  check native hadoop and compression libraries availability
+  distcp <srcurl> <desturl> copy file or directories recursively
+  archive -archiveName NAME -p <parent path> <src>* <dest> create a hadoop archive
+  classpath            prints the class path needed to get the
+  credential           interact with credential providers
+                       Hadoop jar and the required libraries
+  daemonlog            get/set the log level for each daemon
+  trace                view and modify Hadoop tracing settings
+ or
+  CLASSNAME            run the class named CLASSNAME
+
+Most commands print help when invoked w/o parameters.
+[cloudera@quickstart ~]$ hadoop version
+Hadoop 2.6.0-cdh5.4.2
+Subversion http://github.com/cloudera/hadoop -r 15b703c8725733b7b2813d2325659eb7d57e7a3f
+Compiled by jenkins on 2015-05-20T00:03Z
+Compiled with protoc 2.5.0
+From source with checksum de74f1adb3744f8ee85d9a5b98f90d
+This command was run using /usr/jars/hadoop-common-2.6.0-cdh5.4.2.jar
+[cloudera@quickstart ~]$ hadoop fs -ls
+Found 2 items
+drwxr-xr-x   - cloudera cloudera          0 2022-01-10 02:09 newDataFlair
+drwxr-xr-x   - cloudera cloudera          0 2022-01-10 02:20 newDir
+[cloudera@quickstart ~]$ hadoop fs -ls /
+Found 5 items
+drwxr-xr-x   - hbase supergroup          0 2022-01-16 22:12 /hbase
+drwxr-xr-x   - solr  solr                0 2015-06-09 03:38 /solr
+drwxrwxrwx   - hdfs  supergroup          0 2022-01-03 02:18 /tmp
+drwxr-xr-x   - hdfs  supergroup          0 2015-06-09 03:38 /user
+drwxr-xr-x   - hdfs  supergroup          0 2015-06-09 03:36 /var
+[cloudera@quickstart ~]$ hadoop fs -put /home/cloudera/Desktop/test1.txt newDir
+[cloudera@quickstart ~]$ hadoop fs -ls newDir
+Found 1 items
+-rw-r--r--   1 cloudera cloudera         34 2022-01-16 22:14 newDir/test1.txt
+[cloudera@quickstart ~]$ hadoop fs -cat newDir/test1.txt
+Hello World. I am Yash Nimbalkar.
+[cloudera@quickstart ~]$ hadoop fs -mkdir dir3
+[cloudera@quickstart ~]$ hadoop fs -ls 
+Found 3 items
+drwxr-xr-x   - cloudera cloudera          0 2022-01-16 22:20 dir3
+drwxr-xr-x   - cloudera cloudera          0 2022-01-10 02:09 newDataFlair
+drwxr-xr-x   - cloudera cloudera          0 2022-01-16 22:14 newDir
+[cloudera@quickstart ~]$ hadoop fs -copyFromLocal /home/cloudera/Desktop/test2.txt dir3
+[cloudera@quickstart ~]$ hadoop fs -ls dir3
+Found 1 items
+-rw-r--r--   1 cloudera cloudera         30 2022-01-16 22:25 dir3/test2.txt
+[cloudera@quickstart ~]$ hadoop fs -cat dir3/test2.txt
+I am  a student form PICT IT.
+[cloudera@quickstart ~]$ hadoop fs -get newDir/test1.txt /home/cloudera/Downloads
+[cloudera@quickstart ~]$ ls /home/cloudera/Downloads
+test1.txt
+[cloudera@quickstart ~]$ cat /home/cloudera/Downloads/test1.txt
+Hello World. I am Yash Nimbalkar.
+[cloudera@quickstart ~]$ hadoop fs -cat newDir/test1.txt
+Hello World. I am Yash Nimbalkar.
+[cloudera@quickstart ~]$ hadoop fs -copyToLocal dir3/test2.txt /home/cloudera/Downloads
+[cloudera@quickstart ~]$ cat /home/cloudera/Downloads/test2.txt
+I am  a student form PICT IT.
+[cloudera@quickstart ~]$ hadoop fs -cat dir3/test2.txt
+I am  a student form PICT IT.
+[cloudera@quickstart ~]$ hadoop fs -mkdir dir4
+[cloudera@quickstart ~]$ hadoop fs ls
+ls: Unknown command
+Did you mean -ls?  This command begins with a dash.
+[cloudera@quickstart ~]$ hadoop fs -ls
+Found 4 items
+drwxr-xr-x   - cloudera cloudera          0 2022-01-16 22:25 dir3
+drwxr-xr-x   - cloudera cloudera          0 2022-01-16 22:40 dir4
+drwxr-xr-x   - cloudera cloudera          0 2022-01-10 02:09 newDataFlair
+drwxr-xr-x   - cloudera cloudera          0 2022-01-16 22:14 newDir
+[cloudera@quickstart ~]$ hadoop fs -mv dir3/test2.txt dir4
+[cloudera@quickstart ~]$ hadoop fs -ls dir3
+[cloudera@quickstart ~]$ hadoop fs -ls dir4
+Found 1 items
+-rw-r--r--   1 cloudera cloudera         30 2022-01-16 22:25 dir4/test2.txt
+[cloudera@quickstart ~]$ hadoop fs -cp dir4/test2.txt dir3
+[cloudera@quickstart ~]$ hadoop fs -ls dir3
+Found 1 items
+-rw-r--r--   1 cloudera cloudera         30 2022-01-16 22:43 dir3/test2.txt
+[cloudera@quickstart ~]$ hadoop fs -ls dir4
+Found 1 items
+-rw-r--r--   1 cloudera cloudera         30 2022-01-16 22:25 dir4/test2.txt
+[cloudera@quickstart ~]$ 
+
